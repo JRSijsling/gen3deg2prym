@@ -33,6 +33,23 @@ while not done do
     print g1, g0, h1, h0;
     print Ps;
 
+    S<x,y,z> := FieldOfFractions(PolynomialRing(K, 3));
+    den := (g2^2*h1 - g2*g1*h2 + h2^2)*y + (g2^2*h0 - g2*g0*h2)*z;
+    a0 := (g2*h0 - g0*h2)/den*x^2 + ((g2^2*h0 - g2*g0*h2)*y^2 + (g2*g1*h0 - g2*g0*h1 - h2*h0)*y*z)/den;
+    b0 := (g2^2*h0 - g2*g0*h2)/den*x^3 + ((g2^3*h0 - g2^2*g0*h2)*y^2 + (g2^2*g1*h0 - g2*g1*g0*h2 - g2*h2*h0 + g0*h2^2)*y*z + (g2^2*g0*h0 - g2*g0^2*h2)*z^2)/den*x;
+    b1 := b0/y;
+
+    print "";
+    print den;
+    print a0;
+    print b0;
+    print b1;
+
+    deqs := [a0*z, b0, b1*z, z^2];
+    deqs := [ S ! (deq*(y*den)) : deq in deqs ];
+    print "";
+    print deqs;
+
     S<x,y,z> := CoordinateRing(X);
     PP1 := Curve(ProjectiveSpace(K, 1));
 
@@ -44,6 +61,7 @@ while not done do
     end if;
 
     m := map< X -> PP1 | [a0, den] >;
+    print "";
     print Degree(m);
 
     for P in Ps[1..1] do
